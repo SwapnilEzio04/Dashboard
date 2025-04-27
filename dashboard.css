@@ -326,11 +326,11 @@ h4{
     font-size: 13px;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
-h5{
+.earnings-percent{
     font-size: 15px;
     color: rgb(11, 161, 79) ;
 }
-h5::before{
+.earnings-percent::before{
     font-family: 'Font Awesome 6 Free';
     content: "\f062";
     transform: rotate(45deg);
@@ -623,4 +623,46 @@ h5::before{
     
     padding-top: 25px;
  }
-     
+ .row-four{
+    padding: 0;
+    margin-top: 20px ;
+ }
+ .col-xl-6{
+    padding: 0;
+ }
+ .card-four{
+    border-radius: 0;
+ }
+ .card-header5{
+    justify-content: space-between;
+    padding: 10px;
+ }
+ .card-title1{
+    width: max-content;
+ }
+.sort{
+    display: flex;
+    align-items: baseline;
+} 
+.dropdown1{
+    margin: 0;
+    padding: 0;
+}
+.sort-text{
+    font-size: 14px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+}
+.btn-secondary1{
+    padding: 0;
+    color: rgb(146, 143, 143);
+    font-size: 14px;
+    border: none;
+}
+.btn-secondary1:hover{
+    color: rgb(146, 143, 143);
+    background: none;
+}
+.btn-secondary1:active{
+    border: none;
+}
