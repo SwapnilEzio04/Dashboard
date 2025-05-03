@@ -1,226 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard | Velzon-Admin & Dashboard Template</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
-      crossorigin="anonymous" />
-    <link rel="icon" href="my favicon.png" type="image/png" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer" />
-    <link rel="stylesheet" type="text/css" href="dashboard.css" />
-  </head>
-  <body>
-    <section class="container-fluid">
-      <div class="first container">
-        <img class="logo" src="logo-light.png" />
-        <div class="navhead"><span>MENU</span></div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-gauge-simple-high"></i> Dashboards
-          </a>
-          <ul class="dropdown-menu" aria-expanded="true">
-            <li><a class="dropdown-item" href="#">- Analytics</a></li>
-            <li><a class="dropdown-item" href="#">- CRM</a></li>
-            <li><a class="dropdown-item" href="#">- Ecommerce</a></li>
-          </ul>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Velzon-Admin & Dashboard Template</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous" />
+  <link rel="icon" href="my favicon.png" type="image/png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/themes/confetti.min.css" integrity="sha512-8jhXB3DrPNvbKByNPK8o+RgTDjtFEsjxIUgFTsGtD2Rf13GIu7WJDOjos8WTIoOmRp4irOWyMvPsOnGlwl2nKA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="dashboard.css" />
+  <style>
+#map {
+            width: 100%;
+            height: 229px;
+        }
+        
+        /* Custom marker style */
+        .custom-circle-marker {
+            background-color: var(--marker-color);
+            width: 24px !important;
+            height: 24px !important;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        /* Hover effect */
+        .custom-circle-marker:hover {
+            transform: scale(1.3);
+            z-index: 1000;
+        }
+        
+        /* Custom popup style */
+        .custom-popup .leaflet-popup-content-wrapper {
+            border-radius: 4px;
+            padding: 6px;
+            text-align: center;
+        }
+        .custom-popup .leaflet-popup-content {
+            margin: 0;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    .flatpickr-month{
+      background-color: #405189 !important;
+    }
+    .flatpickr-current-month{
+      background-color: #405189 !important;
+      font-family: "Poppins";
+      font-size: 14px;
+    }
+    .flatpickr-monthDropdown-months{
+      background-color: #405189 !important;
+    }
+    .flatpickr-weekdays{
+      background-color: #405189 !important;
+    }
+    .flatpickr-weekday{
+      background-color: #405189 !important;
+      color: white !important;
+      font-family: "Poppins";
+      font-weight: 400 !important;
+    }
+    .flatpickr-day.selected.startRange{
+      border: none;
+      background-color: #405189 !important;
+    }
+    .flatpickr-day.selected.endRange{
+      border: none;
+      background-color: #405189 !important;
+    }
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: #405189;
+      position: fixed;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .menu-section {
+      margin-bottom: 25px;
+    }
+
+    .menu-section-title {
+      font-weight: 600;
+      color: #828EB8;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    .menu-item-label{
+      font-family: "Hanken Grotesk";
+    }
+
+    .menu-item {
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      color: white;
+      position: relative;
+    }
+
+    .menu-item::after {
+      font-family: 'Font Awesome 6 Free';
+      content: "\f0d7";
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      color: white;
+      display: inline-block;
+      font-style: normal;
+      text-rendering: auto;
+      font: var(--fa-font-solid);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .menu-item1 {
+      padding: 8px 8px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      color: white;
+      position: relative;
+    }
+
+    .menu-item1::after {
+      content: "Hot";
+      color: white;
+      font-family: "Poppins";
+      font-size: 10px;
+      background-color: rgb(248, 74, 5);
+      position: absolute;
+      padding: 2px 5px;
+      border: none;
+      border-radius: 5px;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+    }
+
+    .menu-item .bi {
+      margin-right: 10px;
+      transition: transform 0.2s;
+    }
+
+    .menu-item[aria-expanded="true"] .bi-chevron-down {
+      transform: rotate(180deg);
+    }
+
+    .submenu {
+      padding-left: 25px;
+    }
+
+    .submenu-item {
+      padding: 10px 0;
+      display: block;
+      font-size: 13px;
+      color: #a7b1b9;
+      text-decoration: none;
+      font-family: "poppins";
+    }
+
+    .submenu-item:hover {
+      color: white;
+    }
+
+    .submenu-item1 {
+      padding: 10px 0;
+      display: block;
+      font-size: 13px;
+      color: #a7b1b9;
+      text-decoration: none;
+      position: relative;
+      font-family: "poppins";
+    }
+
+    .submenu-item1::after {
+      content: "New";
+      font-family: "Poppins";
+      color: white;
+      font-size: 10px;
+      background-color: rgb(10, 154, 250);
+      position: absolute;
+      padding: 2px 5px;
+      border: none;
+      border-radius: 5px;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+    }
+
+    .product-name {
+      font-size: 14px;
+      font-weight: 500;
+      font-family: "poppins";
+    }
+    .text-muted{
+      font-family: "poppins";
+      font-size: 13px;
+    }
+    .mb-0{
+      font-family: "poppins";
+      font-size: 14px;
+    }
+    .table td,
+    .table th {
+      vertical-align: middle;
+      padding: 12px;
+    }
+
+    .avatar-sm {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chart-container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+            
+        }
+        canvas {
+            background: white;
+            padding: 0;
+            
+        }
+        
+
+
+  </style>
+
+</head>
+
+<body>
+  <section class="container-fluid">
+
+    <div class="d-flex">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header"><img class="logo" src="logo-light.png"></div>
+
+        <!-- Menu Section -->
+        <div class="menu-section">
+          <div class="menu-section-title">MENU</div>
+          <!-- Collapsible Dashboards Menu -->
+          <div class="menu-item" data-bs-toggle="collapse" href="#dashboardsMenu" role="button" aria-expanded="true"
+            aria-controls="dashboardsMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-gauge-simple-high"></i> Dashboards</span>
+          </div>
+          <div class="collapse show" id="dashboardsMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Analytics</a>
+              <a href="#" class="submenu-item"> - CRM</a>
+              <a href="#" class="submenu-item"> - Ecommerce</a>
+              <a href="#" class="submenu-item"> - Crypto</a>
+              <a href="#" class="submenu-item"> - Projects</a>
+              <a href="#" class="submenu-item"> - NFT</a>
+              <a href="#" class="submenu-item"> - Job</a>
+              <a href="#" class="submenu-item1"> - Blog</a>
+            </div>
+          </div>
+          <div class="menu-item" data-bs-toggle="collapse" href="#appsMenu" role="button" aria-expanded="true"
+            aria-controls="dashboardsMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-shapes"></i> Apps</span>
+          </div>
+          <div class="collapse" id="appsMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Calendar</a>
+              <a href="#" class="submenu-item"> - Chat</a>
+              <a href="#" class="submenu-item"> - Email</a>
+            </div>
+          </div>
+          <div class="menu-item1" href="#appsMenu" role="button" aria-expanded="true" aria-controls="dashboardsMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-square-virus"></i> Layouts</span>
+          </div>
         </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-shapes"></i> Apps
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- Calendar</a></li>
-            <li><a class="dropdown-item" href="#">- Chat</a></li>
-            <li><a class="dropdown-item" href="#">- Email</a></li>
-          </ul>
+        <div class="menu-section">
+          <div class="menu-section-title">PAGES</div>
+
+          <!-- Collapsible Authentication Menu -->
+          <div class="menu-item" data-bs-toggle="collapse" href="#authMenu" role="button" aria-expanded="true"
+            aria-controls="authMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-regular fa-circle-user"></i> Authentication</span>
+          </div>
+          <div class="collapse" id="authMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Sign In</a>
+              <a href="#" class="submenu-item"> - Sign Up</a>
+              <a href="#" class="submenu-item"> - Password Reset</a>
+            </div>
+          </div>
+
+
+          <div class="menu-item" data-bs-toggle="collapse" href="#pagesMenu" role="button" aria-expanded="false"
+            aria-controls="pagesMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-regular fa-file-lines"></i> Pages</span>
+          </div>
+          <div class="collapse" id="pagesMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Starter</a>
+              <a href="#" class="submenu-item"> - Profile</a>
+              <a href="#" class="submenu-item"> - Team</a>
+            </div>
+          </div>
+          <div class="menu-item" data-bs-toggle="collapse" href="#landingMenu" role="button" aria-expanded="false"
+            aria-controls="landingMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-rocket"></i> Landing</span>
+          </div>
+          <div class="collapse" id="landingMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - One Page</a>
+              <a href="#" class="submenu-item"> - NFT Landing</a>
+              <a href="#" class="submenu-item"> - Job</a>
+            </div>
+          </div>
         </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-square-virus"></i> Layouts
-          </a>
-        </div>
-        <div class="navhead"><span>PAGES</span></div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-regular fa-circle-user"></i> Authentication
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- Sign In</a></li>
-            <li><a class="dropdown-item" href="#">- Sign Up</a></li>
-            <li><a class="dropdown-item" href="#">- Password Reset</a></li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-regular fa-file-lines"></i> Pages
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- Starter</a></li>
-            <li><a class="dropdown-item" href="#">- Profile</a></li>
-            <li><a class="dropdown-item" href="#">- Team</a></li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-rocket"></i> Landing
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- One Page</a></li>
-            <li><a class="dropdown-item" href="#">- NFT Landing</a></li>
-            <li><a class="dropdown-item" href="#">- Job</a></li>
-          </ul>
-        </div>
-        <div class="navhead"><span>COMPONENTS</span></div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-pen-ruler"></i> Base UI
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- Alerts</a></li>
-            <li><a class="dropdown-item" href="#">- Badges</a></li>
-            <li><a class="dropdown-item" href="#">- Buttons</a></li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-layer-group"></i> Advance UI
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- Sweet Alert</a></li>
-            <li><a class="dropdown-item" href="#">- Nestable List</a></li>
-            <li><a class="dropdown-item" href="#">- Scrollbar</a></li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-scroll"></i> Widgets
-          </a>
-        </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-brands fa-wpforms"></i> Forms
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- Basic Elements</a></li>
-            <li><a class="dropdown-item" href="#">- Form Select</a></li>
-            <li><a class="dropdown-item" href="#">- Checkboxes & Radios</a></li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-table"></i> Tables
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- Basic Tables</a></li>
-            <li><a class="dropdown-item" href="#">- Grid Js</a></li>
-            <li><a class="dropdown-item" href="#">- List Js</a></li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-chart-pie"></i> Charts
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- Apexcharts</a></li>
-            <li><a class="dropdown-item" href="#">- Chartsjs</a></li>
-            <li><a class="dropdown-item" href="#">- Echarts</a></li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-person"></i> Icons
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- Remix</a></li>
-            <li><a class="dropdown-item" href="#">- Boxicons</a></li>
-            <li><a class="dropdown-item" href="#">- Material Design</a></li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-location-dot"></i> Maps
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">- Google</a></li>
-            <li><a class="dropdown-item" href="#">- Vector</a></li>
-            <li><a class="dropdown-item" href="#">- Leaflet</a></li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <a
-            class="btn btn-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="true">
-            <i class="fa-solid fa-share-nodes"></i> Multi Level
-          </a>
+        <div class="menu-section">
+          <div class="menu-section-title">COMPONENTS</div>
+
+
+          <div class="menu-item" data-bs-toggle="collapse" href="#baseuiMenu" role="button" aria-expanded="true"
+            aria-controls="baseuiMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-pen-ruler"></i> Base UI</span>
+          </div>
+          <div class="collapse" id="baseuiMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Alerts</a>
+              <a href="#" class="submenu-item"> - Badges</a>
+              <a href="#" class="submenu-item"> - Buttons</a>
+            </div>
+          </div>
+
+
+          <div class="menu-item" data-bs-toggle="collapse" href="#advanceuiMenu" role="button" aria-expanded="false"
+            aria-controls="advanceuiMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-layer-group"></i> Advance UI</span>
+          </div>
+          <div class="collapse" id="advanceuiMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Sweet Alert</a>
+              <a href="#" class="submenu-item"> - Nestable List</a>
+              <a href="#" class="submenu-item"> - Scrollbar</a>
+            </div>
+          </div>
+          <div class="menu-item" data-bs-toggle="collapse" href="#widgetMenu" role="button" aria-expanded="false"
+            aria-controls="widgetMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-scroll"></i> Widgets</span>
+          </div>
+          <div class="menu-item" data-bs-toggle="collapse" href="#formMenu" role="button" aria-expanded="false"
+            aria-controls="formMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-brands fa-wpforms"></i> Forms</span>
+          </div>
+          <div class="collapse" id="formMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Basic Elements</a>
+              <a href="#" class="submenu-item"> - Form Select</a>
+              <a href="#" class="submenu-item"> - Checkboxes & Radios</a>
+            </div>
+          </div>
+          <div class="menu-item" data-bs-toggle="collapse" href="#tablesMenu" role="button" aria-expanded="false"
+            aria-controls="tableMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-table"></i> Tables</span>
+          </div>
+          <div class="collapse" id="tablesMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Basic Tables</a>
+              <a href="#" class="submenu-item"> - Grid Js</a>
+              <a href="#" class="submenu-item"> - List Js</a>
+            </div>
+          </div>
+          <div class="menu-item" data-bs-toggle="collapse" href="#chartMenu" role="button" aria-expanded="false"
+            aria-controls="chartMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-chart-pie"></i> Charts</span>
+          </div>
+          <div class="collapse" id="chartMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Apexcharts</a>
+              <a href="#" class="submenu-item"> - Chartsjs</a>
+              <a href="#" class="submenu-item"> - Echarts</a>
+            </div>
+          </div>
+          <div class="menu-item" data-bs-toggle="collapse" href="#iconMenu" role="button" aria-expanded="false"
+            aria-controls="iconMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-person"></i> Icons</span>
+          </div>
+          <div class="collapse" id="iconMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Remix</a>
+              <a href="#" class="submenu-item"> - Boxicons</a>
+              <a href="#" class="submenu-item"> - Material Design</a>
+            </div>
+          </div>
+          <div class="menu-item" data-bs-toggle="collapse" href="#mapsMenu" role="button" aria-expanded="false"
+            aria-controls="mapsMenu">
+            <i class="bi bi-chevron-down"></i>
+            <span class="menu-item-label"><i class="fa-solid fa-location-dot"></i> Maps</span>
+          </div>
+          <div class="collapse" id="mapsMenu">
+            <div class="submenu">
+              <a href="#" class="submenu-item"> - Google</a>
+              <a href="#" class="submenu-item"> - Vector</a>
+              <a href="#" class="submenu-item"> - Leaflet</a>
+            </div>
+          </div>
         </div>
       </div>
+
+
+
+
+
+
+
+
       <div class="second container">
         <div class="container">
           <header id="header">
@@ -232,19 +455,16 @@
                       <i class="fa-solid fa-bars"></i>
                     </button>
                     <div class="search">
-                      <input
-                        class="form-control"
-                        type="text"
-                        placeholder="     Search..."
+                      <input class="form-control" type="text" placeholder="     Search..."
                         aria-label="default input example" />
                     </div>
                   </div>
                 </div>
                 <div class="two col">
-                  <div class="p-two p-3">
+                  <div class="p-two p-3" style="line-height: 20px;">
                     <div class="buttons">
-                      <button class="button1">
-                        <img src="us.svg" style="border-radius: 5px" />
+                      <button class="circle-btn">
+                        <img src="us.svg" style="border-radius: 5px;">
                       </button>
                     </div>
                     <div class="buttons">
@@ -274,15 +494,8 @@
                     </div>
                     <div class="founder">
                       <button class="button7">
-                        <img
-                          class="avatar"
-                          src="avatar-1.jpg"
-                          style="width: 30px; border-radius: 50%"
-                          alt="" />
-                        <span class="span1">Anna Adame</span><br /><span
-                          class="span2"
-                          >Founder</span
-                        >
+                        <img class="avatar" src="avatar-1.jpg" style="width: 30px; border-radius: 50%" alt="" />
+                        <span class="span1">Anna Adame</span><br /><span class="span2">Founder</span>
                       </button>
                     </div>
                   </div>
@@ -294,20 +507,20 @@
         <div class="container text-center">
           <div class="row align-items-center">
             <div class="col col-one">
-              <h4>Good Morning, Anna!</h4> 
+              <h4>Good Morning, Anna!</h4>
               <p class="greeting">
                 Here's what's happening with your store today.
               </p>
             </div>
             <div class="col col-two">
               <div class="input-group">
-                <input
-                  type="text"
-                  class="date form-control border-0"
-                  placeholder="01 Jan, 2025 to 31 Jan, 2025"
-                  readonly
-                  style="background-color: white; color: black;" >
-                <div class="calendar"><i class="fa-solid fa-calendar-days"></i></div>  
+                <input class="form-control1" id="dateRange" readonly>
+                <div class="calendar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-calendar-range" viewBox="0 0 16 16">
+                    <path d="M9 7a1 1 0 0 1 1-1h5v2h-5a1 1 0 0 1-1-1M1 9h4a1 1 0 0 1 0 2H1z" />
+                    <path
+                      d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                  </svg></div>
               </div>
               <div class="add"><button class="project"><i class="fa-solid fa-plus"></i> Add Project</button></div>
               <div class="recent"><button class="activity"><i class="fa-solid fa-wave-square"></i></button></div>
@@ -317,7 +530,9 @@
         <div class="row row-one">
           <div class="col-xl-3 col-md-6">
             <div class="card card-one">
-              <div class="card-header1"><span class="card-title"> TOTAL EARNINGS</span> <h5 class="earnings-percent">+16.24 %</h5></div>
+              <div class="card-header1"><span class="card-title"> TOTAL EARNINGS</span>
+                <h5 class="earnings-percent">+16.24 %</h5>
+              </div>
               <div class="card-body1"><span class="amount-title">$559.25k</span></div>
               <div class="net"><a class="view" href="#">View net earnings</a></div>
               <div class="ava"><span><i class="fa-solid fa-dollar-sign"></i></span></div>
@@ -325,7 +540,9 @@
           </div>
           <div class="col-xl-3 col-md-6">
             <div class="card card-one">
-              <div class="card-header1"><span class="card-title"> ORDERS</span> <h5 class="percent">-3.57 %</h5></div>
+              <div class="card-header1"><span class="card-title"> ORDERS</span>
+                <h5 class="percent">-3.57 %</h5>
+              </div>
               <div class="card-body1"><span class="amount-title">36,894</span></div>
               <div class="net"><a class="view" href="#">View all orders</a></div>
               <div class="ava1"><span><i class="fa-solid fa-bag-shopping"></i></i></span></div>
@@ -333,7 +550,9 @@
           </div>
           <div class="col-xl-3 col-md-6">
             <div class="card card-one">
-              <div class="card-header1"><span class="card-title"> CUSTOMERS</span> <h5 class="earnings-percent">+29.08 %</h5></div>
+              <div class="card-header1"><span class="card-title"> CUSTOMERS</span>
+                <h5 class="earnings-percent">+29.08 %</h5>
+              </div>
               <div class="card-body1"><span class="amount-title">183.35M</span></div>
               <div class="net"><a class="view" href="#">See details</a></div>
               <div class="ava2"><span><i class="fa-regular fa-user"></i></span></div>
@@ -341,199 +560,1237 @@
           </div>
           <div class="col-xl-3 col-md-6">
             <div class="card card-one">
-              <div class="card-header1"><span class="card-title"> MY BALANCE</span> <h5 class="balance">+0.00 %</h5></div>
+              <div class="card-header1"><span class="card-title"> MY BALANCE</span>
+                <h5 class="balance">+0.00 %</h5>
+              </div>
               <div class="card-body1"><span class="amount-title">$165.89k</span></div>
               <div class="net"><a class="view" href="#">Withdraw money</a></div>
               <div class="ava3"><span><i class="fa-solid fa-wallet"></i></span></div>
             </div>
-        </div>
-        <div class="row row-two">
-          <div class="col-xl-8">
-            <div class="card card-two">
-              <div class="card-header2">
-                <h4 class="revenue">Revenue</h4>
-                <div class="time">
-                  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group me-2" role="group" aria-label="First group">
-                      <button type="button" class="btn1 btn-primary">ALL</button>
-                      <button type="button" class="btn1 btn-primary">1M</button>
-                      <button type="button" class="btn1 btn-primary">6M</button>
-                      <button type="button" class="btn2 btn-primary">1Y</button>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-header3">
-              <div class="desc container text-center">
-                <div class="row row-three">
-                  <div class="col-6 col-sm-3">
-                    <h4 class="num">7,585</h4>
-                    <p class="tex">Orders</p>
-                  </div>
-                  <div class="col-6 col-sm-3">
-                    <h4 class="num">$22.89k</h4>
-                    <p class="tex">Earnings</p>
-                  </div>
-                  <div class="col-6 col-sm-3">
-                    <h4 class="num">367</h4>
-                    <p class="tex">Refund</p>
-                  </div>
-                  <div class="col-6 col-sm-3">
-                    <h4 class="num1">18.92%</h4>
-                    <p class="tex">Conversation Ratio</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="chart-container">
-                <div class="graph"><img src="graph.png" style="cursor: crosshair;"></div>
-                <div class="chart">
-                  <div class="y-axis">
-                    <div class="y-axis-label">120.00</div>
-                    <div class="y-axis-label">100.00</div>
-                    <div class="y-axis-label">80.00</div>
-                    <div class="y-axis-label">60.00</div>
-                    <div class="y-axis-label">40.00</div>
-                    <div class="y-axis-label">20.00</div>
-                    <div class="y-axis-label">0.00</div>
-                  </div>
-                  <div class="chart-area">
-                    <div class="y-axis-line"></div> 
-                    <div class="x-axis-line"></div>
-                    <div class="x-axis">
-                    <div class="x-axis-label">Jan</div>
-                    <div class="x-axis-label">Feb</div>
-                    <div class="x-axis-label">Mar</div>
-                    <div class="x-axis-label">Apr</div>
-                    <div class="x-axis-label">May</div>
-                    <div class="x-axis-label">Jun</div>
-                    <div class="x-axis-label">Jul</div>
-                    <div class="x-axis-label">Aug</div>
-                    <div class="x-axis-label">Sep</div>
-                    <div class="x-axis-label">Oct</div>
-                    <div class="x-axis-label">Nov</div>
-                    <div class="x-axis-label">Dec</div>
-                    </div>
-                </div>
-              </div>
-              <div class="legend">
-                <div class="legend-item">
-                  <span class="color-box orders"></span>
-                  <span>Orders</span>
-                </div>
-                <div class="legend-item">
-                  <span class="color-box earnings"></span>
-                  <span>Earnings</span>
-                </div>
-                <div class="legend-item">
-                  <span class="color-box refunds"></span>
-                  <span>Refunds</span>
-                </div>
-              </div>  
-              </div>
-            </div>
           </div>
-        </div>
-          <div class="col-xl-4">
-            <div class="card card-three">
-              <div class="card-header4">
-                <h4 class="sales">Sales by Locations</h4>
-                <div class="export"><button type="button" class="btn btn-secondary report">Export Report</button></div>
+          <div class="row row-two">
+            <div class="col-xl-8">
+              <div class="card card-two">
+                <div class="card-header2">
+                  <h4 class="revenue" style="font-family: Poppins;">Revenue</h4>
+                  <div class="time">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                      <div class="btn-group me-2" role="group" aria-label="First group">
+                        <button type="button" class="btn1 btn-primary">ALL</button>
+                        <button type="button" class="btn1 btn-primary">1M</button>
+                        <button type="button" class="btn1 btn-primary">6M</button>
+                        <button type="button" class="btn2 btn-primary">1Y</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-header3">
+                  <div class="desc container text-center">
+                    <div class="row row-three">
+                      <div class="col-6 col-sm-3">
+                        <h4 class="num">7,585</h4>
+                        <p class="tex">Orders</p>
+                      </div>
+                      <div class="col-6 col-sm-3">
+                        <h4 class="num">$22.89k</h4>
+                        <p class="tex">Earnings</p>
+                      </div>
+                      <div class="col-6 col-sm-3">
+                        <h4 class="num">367</h4>
+                        <p class="tex">Refund</p>
+                      </div>
+                      <div class="col-6 col-sm-3">
+                        <h4 class="num1">18.92%</h4>
+                        <p class="tex">Conversation Ratio</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="chart-container">
+                    <canvas id="salesChart"></canvas>
+                    </div>
+                    
+                  </div>
+                </div>
               </div>
-              <div class="card-body card-body2">
+            
+            <div class="col-xl-4">
+              <div class="card card-three">
+                <div class="card-header4">
+                  <h4 class="sales" style="font-family: poppins;">Sales by Locations</h4>
+                  <div class="export" style="font-family: poppins;"><button type="button" class="btn btn-secondary report">Export Report</button>
+                  </div>
+                </div>
+                <div class="card-body card-body2">
                   <div class="slider">
-                  <img class="location" src="map.png">
-                  <div class="country"><p class="name">Canada</p><p class="name">75%</p></div>
-                  <div class="progress" role="progressbar" aria-label="Info striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style=" height: 7px; margin: 0 25px 0 25px; border-radius: 5px;">
-                    <div class="progress-bar progress-bar-striped bg-info" style="width: 75%; background-color: blue;"></div>
-                  </div>
-                  <div class="country"><p class="name">Greenland</p><p class="name">47%</p></div>
-                  <div class="progress" role="progressbar" aria-label="Warning striped example" aria-valuenow="47" aria-valuemin="0" aria-valuemax="100" style=" height: 7px; margin: 0 25px 0 25px; border-radius: 5px;">
-                    <div class="progress-bar progress-bar-striped bg-info" style="width: 47%"></div>
-                  </div>
-                  <div class="country"><p class="name">Russia</p><p class="name">82%</p></div>
-                  <div class="progress" role="progressbar" aria-label="Danger striped example" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100" style=" height: 7px; margin: 0 25px 0 25px; border-radius: 5px;">
-                    <div class="progress-bar progress-bar-striped bg-info" style="width: 82%"></div>
+                    <div id="map"></div>
+                    <div class="country">
+                      <p class="name">Canada</p>
+                      <p class="name">75%</p>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Info striped example" aria-valuenow="75"
+                      aria-valuemin="0" aria-valuemax="100"
+                      style=" height: 7px; margin: 0 25px 0 25px; border-radius: 5px;">
+                      <div class="progress-bar progress-bar-striped bg-info"
+                        style="width: 75%; background-color: blue;"></div>
+                    </div>
+                    <div class="country">
+                      <p class="name">Greenland</p>
+                      <p class="name">47%</p>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Warning striped example" aria-valuenow="47"
+                      aria-valuemin="0" aria-valuemax="100"
+                      style=" height: 7px; margin: 0 25px 0 25px; border-radius: 5px;">
+                      <div class="progress-bar progress-bar-striped bg-info" style="width: 47%"></div>
+                    </div>
+                    <div class="country">
+                      <p class="name">Russia</p>
+                      <p class="name">82%</p>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Danger striped example" aria-valuenow="82"
+                      aria-valuemin="0" aria-valuemax="100"
+                      style=" height: 7px; margin: 0 25px 0 25px; border-radius: 5px;">
+                      <div class="progress-bar progress-bar-striped bg-info" style="width: 82%"></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row row-four">
-            <div class="col-xl-6">
-              <div class="card card-four">
-                <div class="card-header5 align-items-center d-flex">
-                  <h4 class="card-title1 mb-0">Best Selling Products</h4>
-                  <div class="sort"><span class="sort-text">SORT BY:</span> <div class="dropdown dropdown1">
-                    <button class="btn btn-secondary1 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Today
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Today</a></li>
-                      <li><a class="dropdown-item" href="#">Yesterday</a></li>
-                      <li><a class="dropdown-item" href="#">Last 7 Days</a></li>
-                      <li><a class="dropdown-item" href="#">Last 30 Days</a></li>
-                      <li><a class="dropdown-item" href="#">This Month</a></li>
-                      <li><a class="dropdown-item" href="#">Last Month</a></li>
-                    </ul>
-                  </div>
-                  </div>
-                </div>
-                <div class="card-body3">
-                  <div class="table-responsive">
-                    <table class="table table-hover table-centered align-middle table-nowrap mb-0">
-                      <tbody>
-                        <tr style="display: flex; justify-content:space-evenly;">
-                          <td>
-                            <div class="d-flex" >
-                              <div class="avatar-sm bg-light rounded p-1 me-2">
-                                <img src="img-1.png" style="width: 40px;">
-                              </div>
-                              <div class="product" style=" line-height:26px;">
-                              <h5 class="product-name" style="font-size: 15px; margin: 0; padding-top: 5px;">Branded T-Shirts</h5>
-                              <span class="text-muted" style="font-size: 12px;">24 Apr 2021</span>
-                              </div>
+            <div class="row row-four">
+              <div class="col-xl-6">
+                <div class="card card-four">
+                  <div class="card-body3">
+                    <div class="table-responsive">
+                      <table class="table table-hover table-centered align-middle table-nowrap mb-0">
+                        <div class="card-header5 align-items-center d-flex">
+                          <h4 class="card-title1 mb-0">Best Selling Products</h4>
+                          <div class="sort"><span class="sort-text">SORT BY:</span>
+                            <div class="dropdown dropdown1">
+                              <button class="btn btn-secondary1 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Today
+                              </button>
+                              <ul class="dropdown-menu" style="font-family: poppins;">
+                                <li><a class="dropdown-item" href="#">Today</a></li>
+                                <li><a class="dropdown-item" href="#">Yesterday</a></li>
+                                <li><a class="dropdown-item" href="#">Last 7 Days</a></li>
+                                <li><a class="dropdown-item" href="#">Last 30 Days</a></li>
+                                <li><a class="dropdown-item" href="#">This Month</a></li>
+                                <li><a class="dropdown-item" href="#">Last Month</a></li>
+                              </ul>
                             </div>
-                          </td>
-                          <td>
-                            <div class="product" style=" line-height:26px;">
-                              <h5 class="product-name" style="font-size: 15px; margin: 0; padding-top: 5px;">$29.00</h5>
-                              <span class="text-muted" style="font-size: 12px;">Price</span>
+                          </div>
+                        </div>
+
+                        <tbody>
+                          <!-- Product 1 -->
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-light rounded p-1 me-2">
+                                  <img src="img-1.png" alt="Branded T-Shirts" class="img-fluid" style="width: 40px;">
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 product-name">Branded T-Shirts</h6>
+                                  <small class="text-muted">24 Apr 2021</small>
+                                </div>
                               </div>
-                          </td>
-                          <td>
-                            <div class="product" style=" line-height:26px;">
-                              <h5 class="product-name" style="font-size: 15px; margin: 0; padding-top: 5px;">62</h5>
-                              <span class="text-muted" style="font-size: 12px;">Orders</span>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">$29.00</h6>
+                              <small class="text-muted">Price</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">62</h6>
+                              <small class="text-muted">Orders</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">510</h6>
+                              <small class="text-muted">Stock</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">$1798</h6>
+                              <small class="text-muted">Amount</small>
+                            </td>
+                          </tr>
+
+                          <!-- Product 2 -->
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-light rounded p-1 me-2">
+                                  <img src="img-2.png" alt="Bentwood Chair" class="img-fluid" style="width: 40px;">
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 product-name">Bentwood Chair</h6>
+                                  <small class="text-muted">19 Mar 2021</small>
+                                </div>
                               </div>
-                          </td>
-                          <td>
-                            <div class="product" style=" line-height:26px;">
-                              <h5 class="product-name" style="font-size: 15px; margin: 0; padding-top: 5px;">510</h5>
-                              <span class="text-muted" style="font-size: 12px;">Stock</span>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">$85.20</h6>
+                              <small class="text-muted">Price</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">35</h6>
+                              <small class="text-muted">Orders</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"><span class="badge bg-danger-subtle text-danger">Out of stock</span></h6>
+                              <small class="text-muted">Stock</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">$2982</h6>
+                              <small class="text-muted">Amount</small>
+                            </td>
+                          </tr>
+
+                          <!-- Product 3 -->
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-light rounded p-1 me-2">
+                                  <img src="img-3.png" alt="Borosil Paper Cup" class="img-fluid" style="width: 40px;">
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 product-name">Borosil Paper Cup</h6>
+                                  <small class="text-muted">01 Mar 2021</small>
+                                </div>
                               </div>
-                          </td>
-                          <td>
-                            <div class="product" style=" line-height:26px;">
-                              <h5 class="product-name" style="font-size: 15px; margin: 0; padding-top: 5px;">$1798</h5>
-                              <span class="text-muted" style="font-size: 12px;">Amount</span>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">$14.00</h6>
+                              <small class="text-muted">Price</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">80</h6>
+                              <small class="text-muted">Orders</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">749</h6>
+                              <small class="text-muted">Stock</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">$1120</h6>
+                              <small class="text-muted">Amount</small>
+                            </td>
+                          </tr>
+
+                          <!-- Product 4 -->
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-light rounded p-1 me-2">
+                                  <img src="img-4.png" alt="One Seater Sofa" class="img-fluid" style="width: 40px;">
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 product-name">One Seater Sofa</h6>
+                                  <small class="text-muted">11 Feb 2021</small>
+                                </div>
                               </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">$127.50</h6>
+                              <small class="text-muted">Price</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">56</h6>
+                              <small class="text-muted">Orders</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"><span class="badge bg-danger-subtle text-danger">Out of stock</span></h6>
+                              <small class="text-muted">Stock</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">$7140</h6>
+                              <small class="text-muted">Amount</small>
+                            </td>
+                          </tr>
+
+                          <!-- Product 5 -->
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-light rounded p-1 me-2">
+                                  <img src="img-5.png" alt="Stillbird Helmet" class="img-fluid" style="width: 40px;">
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 product-name">Stillbird Helmet</h6>
+                                  <small class="text-muted">17 Jan 2021</small>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">$54.00</h6>
+                              <small class="text-muted">Price</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">74</h6>
+                              <small class="text-muted">Orders</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">805</h6>
+                              <small class="text-muted">Stock</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">$3396</h6>
+                              <small class="text-muted">Amount</small>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="navigation" style="display: flex;justify-content: space-between; align-items: center;">
+                      <div class="results-number" style="font-family: poppins;"><span style="font-size: 12px; color: #878A99;">Showing <span
+                            style="color: #666874; font-weight: 700;">5</span> of <span
+                            style="color: #666874; font-weight: 700;">25</span> Results</span></div>
+                      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="font-family: poppins;">
+                        <div class="btn-group me-2" role="group" aria-label="First group">
+                          <button type="button" class="btn btn-primary"
+                            style="font-size: 12px; padding: 2px 10px; background:none; color: #405189; border: 1px rgb(216, 212, 212) solid; border-radius: 5px;"><i
+                              class="fa-solid fa-arrow-left"></i></button>
+                          <button type="button" class="btn btn-primary"
+                            style="font-size: 12px; padding: 2px 5px; background:none; color: #405189; border: 1px rgb(216, 212, 212) solid; border-radius: 5px">1</button>
+                          <button type="button" class="btn btn-primary"
+                            style="font-size: 12px; padding: 2px 7px; background-color:#405189 ; color: white; border: 1px rgb(216, 212, 212) solid; border-radius: 5px">2</button>
+                          <button type="button" class="btn btn-primary"
+                            style="font-size: 12px; padding: 2px 5px; background:none; color: #405189; border: 1px rgb(216, 212, 212) solid; border-radius: 5px">3</button>
+                          <button type="button" class="btn btn-primary"
+                            style="font-size: 12px; padding: 2px 10px; background:none; color: #405189; border: 1px rgb(216, 212, 212) solid; border-radius: 5px"><i
+                              class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-6">
+                <div class="card card-four">
+                  <div class="card-body3">
+                    <div class="table-responsive">
+                      <table class="table table-hover table-centered align-middle table-nowrap mb-0">
+                        <div class="card-header6 align-items-center d-flex">
+                          <h4 class="card-title1 mb-0">Top Sellers</h4>
+                          <div class="sort"><span class="sort-text"></span>
+                            <div class="dropdown dropdown1">
+                              <button class="btn btn-secondary1 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Report
+                              </button>
+                              <ul class="dropdown-menu" style="font-family: poppins;">
+                                <li><a class="dropdown-item" href="#">Download Report</a></li>
+                                <li><a class="dropdown-item" href="#">Export</a></li>
+                                <li><a class="dropdown-item" href="#">Import</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <tbody>
+                          <!-- Product 1 -->
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-light rounded p-1 me-2">
+                                  <img src="img-6.png" alt="Branded T-Shirts" class="img-fluid" style="width: 40px;">
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 product-name">iTest Factory</h6>
+                                  <small class="text-muted">Oliver Tyler</small>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"></h6>
+                              <small class="text-muted">Bags and wallets</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">8547</h6>
+                              <small class="text-muted">Stock</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"></h6>
+                              <small class="text-muted">$541200</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">32% <i class="fa-solid fa-signal" style="color: #18f6fd;"></i> </h6>
+                              <small class="text-muted"></small>
+                            </td>
+                          </tr>
+
+                          <!-- Product 2 -->
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-light rounded p-1 me-2">
+                                  <img src="img-7.png" alt="Bentwood Chair" class="img-fluid" style="width: 40px;">
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 product-name">Digitech Galaxy</h6>
+                                  <small class="text-muted">John Roberts</small>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"></h6>
+                              <small class="text-muted">Watches</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">895</h6>
+                              <small class="text-muted">Stock</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"></h6>
+                              <small class="text-muted">$75030</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">79% <i class="fa-solid fa-signal" style="color: #18f6fd;"></i> </h6>
+                              <small class="text-muted"></small>
+                            </td>
+                          </tr>
+
+                          <!-- Product 3 -->
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-light rounded p-1 me-2">
+                                  <img src="img-8.png" alt="Borosil Paper Cup" class="img-fluid" style="width: 40px;">
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 product-name">Nesta Technologies</h6>
+                                  <small class="text-muted">Harley Fuller</small>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"></h6>
+                              <small class="text-muted">Bike Accessories</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">3470</h6>
+                              <small class="text-muted">Stock</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"></h6>
+                              <small class="text-muted">$45600</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">90% <i class="fa-solid fa-signal" style="color: #18f6fd;"></i> </h6>
+                              <small class="text-muted"></small>
+                            </td>
+                          </tr>
+
+                          <!-- Product 4 -->
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-light rounded p-1 me-2">
+                                  <img src="img-9.png" alt="One Seater Sofa" class="img-fluid" style="width: 40px;">
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 product-name">Zoetic Fashion</h6>
+                                  <small class="text-muted">James Bowen</small>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"></h6>
+                              <small class="text-muted">Clothes</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">5488</h6>
+                              <small class="text-muted">Stock</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"></h6>
+                              <small class="text-muted">$29456</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">40% <i class="fa-solid fa-signal" style="color: #18f6fd;"></i> </h6>
+                              <small class="text-muted"></small>
+                            </td>
+                          </tr>
+
+                          <!-- Product 5 -->
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-light rounded p-1 me-2">
+                                  <img src="img-10.png" alt="Stillbird Helmet" class="img-fluid" style="width: 40px;">
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 product-name">Meta4Systems</h6>
+                                  <small class="text-muted">Zoe Dennis</small>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"></h6>
+                              <small class="text-muted">Furniture</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">4100</h6>
+                              <small class="text-muted">Stock</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0"></h6>
+                              <small class="text-muted">$11260</small>
+                            </td>
+                            <td>
+                              <h6 class="mb-0">57% <i class="fa-solid fa-signal" style="color: #18f6fd;"></i> </h6>
+                              <small class="text-muted"></small>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="navigation" style="display: flex;justify-content: space-between; align-items: center;">
+                      <div class="results-number" style="font-family: poppins;"><span style="font-size: 12px; color: #878A99;">Showing <span
+                            style="color: #666874; font-weight: 700;">5</span> of <span
+                            style="color: #666874; font-weight: 700;">25</span> Results</span></div>
+                      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="font-family: poppins;">
+                        <div class="btn-group me-2" role="group" aria-label="First group">
+                          <button type="button" class="btn btn-primary"
+                            style="font-size: 12px; padding: 2px 10px; background:none; color: #405189; border: 1px rgb(216, 212, 212) solid; border-radius: 5px;"><i
+                              class="fa-solid fa-arrow-left"></i></button>
+                          <button type="button" class="btn btn-primary"
+                            style="font-size: 12px; padding: 2px 5px; background:none; color: #405189; border: 1px rgb(216, 212, 212) solid; border-radius: 5px">1</button>
+                          <button type="button" class="btn btn-primary"
+                            style="font-size: 12px; padding: 2px 7px; background-color:#405189 ; color: white; border: 1px rgb(216, 212, 212) solid; border-radius: 5px">2</button>
+                          <button type="button" class="btn btn-primary"
+                            style="font-size: 12px; padding: 2px 5px; background:none; color: #405189; border: 1px rgb(216, 212, 212) solid; border-radius: 5px">3</button>
+                          <button type="button" class="btn btn-primary"
+                            style="font-size: 12px; padding: 2px 10px; background:none; color: #405189; border: 1px rgb(216, 212, 212) solid; border-radius: 5px"><i
+                              class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <div class="row row-five">
+            <div class="col-xl-4 colxl">
+              <div class="card card-five">
+              <div class="card-body4">
+                    <div class="card-header5 align-items-center d-flex">
+                      <h4 class="card-title2 mb-0">Store Visits by Stores</h4>
+                      <div class="sort">
+                        <div class="dropdown dropdown1">
+                          <button class="btn btn-secondary1 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Report
+                          </button>
+                          <ul class="dropdown-menu" style="font-family: poppins;">
+                            <li><a class="dropdown-item" href="#">Downlaod Report</a></li>
+                            <li><a class="dropdown-item" href="#">Export</a></li>
+                            <li><a class="dropdown-item" href="#">Import</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="chart-container" style="width: 300px; height: 300px; margin-top: 20px; padding: 10px;">
+                      <canvas id="visitsChart"></canvas>
+                  </div>
+              </div>
+              </div>
+            </div>
+            <div class="col-xl-8 colxll">
+              <div class="card card-six" style="border-radius: 0;">
+              <div class="card-body5">
+                <div class="card-header5 align-items-center d-flex" style="border: none;">
+                  <h4 class="card-title1 mb-0">Recent Orders</h4>
+                    <div class=" dropdown1">
+                      <button class="btn btn-secondary2" type="button">
+                         <i class="fa-solid fa-file-lines"></i> Generate Report
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-centered align-middle table-nowrap mb-0">
+                    <thead>
+                      <tr>
+                        <th style="width: 5%; background-color: #F3F6F9; font-weight: 500; border: none;">Order ID</th>
+                        <th style="width: 20%; background-color: #F3F6F9; font-weight: 500; border: none;">Customer</th>
+                        <th style="width: 15%; background-color: #F3F6F9; font-weight: 500; border: none;">Product</th>
+                        <th style="width: 5%; background-color: #F3F6F9; font-weight: 500; border: none;">Amount</th>
+                        <th style="width: 15%; background-color: #F3F6F9; font-weight: 500; border: none;">Vendor</th>
+                        <th style="width: 5%; background-color: #F3F6F9; font-weight: 500; border: none;">Status</th>
+                        <th style="width: 15%; background-color: #F3F6F9; font-weight: 500; border: none;">Rating</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="d-flex align-items-center" style="color: rgb(51, 65, 110);">
+                            <div>
+                              <h6 class="mb-0 product-name">#VZ2112</h6>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center" style="font-weight: 600; gap: 10px;">
+                            <img src="avatar-1.jpg" style="width: 30px; border-radius: 50%;">
+                            <small class="text-muted">Alex Smith</small>
+                          </div> 
+                        </td>
+                        <td>
+                          <small class="text-muted">Clothes</small>
+                        </td>
+                        <td>
+                          <small class="text-muted" style="color: rgb(10, 179, 156) !important;">$109.00</small>
+                        </td>
+                        <td>
+                          <small class="text-muted">Zoetic Fashion</small>
+                        </td>
+                        <td>
+                          <span class="badge text-bg paid">Paid</span>
+                        </td>
+                        <td>
+                          <div style="vertical-align: middle;">
+                            <span class="mb-0 product-name">5.0</span>
+                            <span class="text-muted">(61 votes)</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="d-flex align-items-center" style="color: rgb(51, 65, 110);">
+                            <div>
+                              <h6 class="mb-0 product-name">#VZ2111</h6>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center" style="font-weight: 600; gap: 10px;">
+                            <img src="avatar-2.jpg" style="width: 30px; border-radius: 50%;">
+                            <small class="text-muted">Jansh Brown</small>
+                          </div> 
+                        </td>
+                        <td>
+                          <small class="text-muted">Kitchen Storage</small>
+                        </td>
+                        <td>
+                          <small class="text-muted" style="color: rgb(10, 179, 156) !important;">$149.00</small>
+                        </td>
+                        <td>
+                          <small class="text-muted">Micro Design</small>
+                        </td>
+                        <td>
+                          <span class="badge text-bg pending">Pending</span>
+                        </td>
+                        <td>
+                          <div style="vertical-align: middle;">
+                            <span class="mb-0 product-name">4.5</span>
+                            <span class="text-muted">(61 votes)</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="d-flex align-items-center" style="color: rgb(51, 65, 110);">
+                            <div>
+                              <h6 class="mb-0 product-name">#VZ2109</h6>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center" style="font-weight: 600; gap: 10px;">
+                            <img src="avatar-3.jpg" style="width: 30px; border-radius: 50%;">
+                            <small class="text-muted">Ayaan Bowen</small>
+                          </div> 
+                        </td>
+                        <td>
+                          <small class="text-muted">Bike Accessories</small>
+                        </td>
+                        <td>
+                          <small class="text-muted" style="color: rgb(10, 179, 156) !important;">$215.00</small>
+                        </td>
+                        <td>
+                          <small class="text-muted">Nesta Technologies</small>
+                        </td>
+                        <td>
+                          <span class="badge text-bg paid">Paid</span>
+                        </td>
+                        <td>
+                          <div style="vertical-align: middle;">
+                            <span class="mb-0 product-name">4.9</span>
+                            <span class="text-muted">(89 votes)</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="d-flex align-items-center" style="color: rgb(51, 65, 110);">
+                            <div>
+                              <h6 class="mb-0 product-name">#VZ2108</h6>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center" style="font-weight: 600; gap: 10px;">
+                            <img src="avatar-4.jpg" style="width: 30px; border-radius: 50%;">
+                            <small class="text-muted">Prezy Mark</small>
+                          </div> 
+                        </td>
+                        <td>
+                          <small class="text-muted">Furniture</small>
+                        </td>
+                        <td>
+                          <small class="text-muted" style="color: rgb(10, 179, 156) !important;">$199.00</small>
+                        </td>
+                        <td>
+                          <small class="text-muted">Syntyce Solution</small>
+                        </td>
+                        <td>
+                          <span class="badge text-bg unpaid">Unpaid</span>
+                        </td>
+                        <td>
+                          <div style="vertical-align: middle;">
+                            <span class="mb-0 product-name">4.3</span>
+                            <span class="text-muted">(47 votes)</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="d-flex align-items-center" style="color: rgb(51, 65, 110);">
+                            <div>
+                              <h6 class="mb-0 product-name">#VZ2107</h6>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center" style="font-weight: 600; gap: 10px;">
+                            <img src="avatar-5.jpg" style="width: 30px; border-radius: 50%;">
+                            <small class="text-muted">Vihan Hudda</small>
+                          </div> 
+                        </td>
+                        <td>
+                          <small class="text-muted">Bags and Wallets</small>
+                        </td>
+                        <td>
+                          <small class="text-muted" style="color: rgb(10, 179, 156) !important;">$330.00</small>
+                        </td>
+                        <td>
+                          <small class="text-muted">iTest Factory</small>
+                        </td>
+                        <td>
+                          <span class="badge text-bg paid">Paid</span>
+                        </td>
+                        <td>
+                          <div style="vertical-align: middle;">
+                            <span class="mb-0 product-name">4.7</span>
+                            <span class="text-muted">(161 votes)</span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+      <div class="right-sidebar">
+        <div class="card card-seven">
+          <div class="p-3">
+            
+            <div class="sidebar right">
+              <!-- Recent Activity Section -->
+              <div class="sidebar-section">
+                <h6 class="text-muted mb-0 text-uppercase fw-semibold">Recent Activities</h6>  
+                  
+                  <div class="activity-item">
+                      <div class="activity-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                      <div class="activity-content">
+                          <div class="activity-text">
+                              <strong>Purchased by James Price</strong>
+                              <h6 class="text-muted mb-0">Product noise evolve smartwatch</h6>
+                          </div>
+                          <div class="activity-time">2:14 PM Today</div>
+                      </div>
+                  </div>
+                  
+                  <div class="activity-item">
+                      <div class="activity-icon1"><i class="fa-solid fa-layer-group"></i></div>
+                      <div class="activity-content">
+                          <div class="activity-text">
+                            <strong>Added new style collection</strong>
+                            <h6 class="text-muted mb-0">By Nesta Technologies</h6>
+                            <div class="d-inline-flex gap-2 border border-dashed p-2 mb-2" style="gap: 10px !important;">
+                              <img src="img-11.png" style="width: 35px;">
+                              <img src="img-2.png" style="width: 35px;">
+                              <img src="img-12.png" style="width: 35px;">
+                            </div>
+                          </div>
+                          <div class="activity-time">9:47 PM Yesterday</div>
+                      </div>
+                  </div>
+                  
+                  <div class="activity-item">
+                      <div class="activity-icon"><img src="avatar-2.jpg" style="width: 20px; border-radius: 50%;"></div>
+                      <div class="activity-content">
+                          <div class="activity-text">
+                              <strong>Natasha Carey have liked the products</strong>
+                          </div>
+                          <div class="activity-text small">
+                              Allow users to like products in your WooCommerce store
+                          </div>
+                          <div class="activity-time">25 Dec, 2021</div>
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- Top Categories Section -->
+              <div class="sidebar-section">
+                  <div class="sidebar-title">Top 10 Categories</div>
+                  <ul class="category-list">
+                      <li class="category-item">
+                          <span>1. Mobile & Accessories</span>
+                          <span class="category-count">(10,294)</span>
+                      </li>
+                      <li class="category-item">
+                          <span>2. Desktop</span>
+                          <span class="category-count">(6,256)</span>
+                      </li>
+                      <li class="category-item">
+                          <span>3. Electronics</span>
+                          <span class="category-count">(3,479)</span>
+                      </li>
+                      <li class="category-item">
+                          <span>4. Home & Furniture</span>
+                          <span class="category-count">(2,275)</span>
+                      </li>
+                      <li class="category-item">
+                          <span>5. Grocery</span>
+                          <span class="category-count">(1,950)</span>
+                      </li>
+                      <li class="category-item">
+                          <span>6. Fashion</span>
+                          <span class="category-count">(1,582)</span>
+                      </li>
+                      <li class="category-item">
+                          <span>7. Appliances</span>
+                          <span class="category-count">(1,037)</span>
+                      </li>
+                      <li class="category-item">
+                          <span>8. Beauty, Toys & More</span>
+                          <span class="category-count">(924)</span>
+                      </li>
+                      <li class="category-item">
+                          <span>9. Food & Drinks</span>
+                          <span class="category-count">(701)</span>
+                      </li>
+                      <li class="category-item">
+                          <span>10. Toys & Games</span>
+                          <span class="category-count">(239)</span>
+                      </li>
+                  </ul>
+                  <div style="text-align: center;">
+                  <a class="view-categories" href="#">View all categories</a>
+                </div>
+              </div>
+              <div class="product-review">
+                <div class="product-heading">
+                  <h6 class="text-muted mb-3 text-uppercase fw-semibold">Product Reviews</h6>
+                  <div class="vertical-swiper">
+                    <div class="slides-container">
+                        <!-- Slide 1 -->
+                        <div class="testimonial-slide">
+                            <img src="avatar-2.jpg" style="width: 20px;">
+                            <p class="testimonial-text">The product is very beautiful. I like it.</p>
+                            <div class="testimonial-rating">★★★★★</div>
+                            <p class="testimonial-author">- by <span class="author"> Nancy Martino</span></p>
+                        </div>
+                        
+                        <!-- Slide 2 -->
+                        <div class="testimonial-slide">
+                          <img src="img-6.png" style="width: 20px;">
+                            <p class="testimonial-text">Great product and looks great, lots of features.</p>
+                            <div class="testimonial-rating">★★★★★</div>
+                            <p class="testimonial-author">- by <span style="font-style: italic;">Force Medicines</span></p>
+                        </div>
+                        <div class="testimonial-slide">
+                          <img src="img-9.png" style="width: 20px;">
+                            <p class="testimonial-text">Very beautiful product and very helpful</p>
+                            <div class="testimonial-rating">★★★★★</div>
+                            <p class="testimonial-author">- by <span style="font-style: italic;">Zoetic Fashion</span></p>
+                        </div>
+                        <div class="testimonial-slide">
+                          <img src="avatar-3.jpg" style="width: 20px;">
+                            <p class="testimonial-text">Amazing Template, very easy to</p>
+                            <div class="testimonial-rating">★★★★★</div>
+                            <p class="testimonial-author">- by <span style="font-style: italic;">Henry Baird</span></p>
+                        </div>
+                        <div class="testimonial-slide">
+                          <img src="avatar-2.jpg" style="width: 20px;">
+                          <p class="testimonial-text">The product is very beautiful. I like it.</p>
+                          <div class="testimonial-rating">★★★★★</div>
+                          <p class="testimonial-author">- by <span class="author"> Nancy Martino</span></p>
+                      </div>
+                      <div class="testimonial-slide">
+                        <img src="img-6.png" style="width: 20px;">
+                          <p class="testimonial-text">Great product and looks great, lots of features.</p>
+                          <div class="testimonial-rating">★★★★★</div>
+                          <p class="testimonial-author">- by <span style="font-style: italic;">Force Medicines</span></p>
+                      </div>
+                      <div class="testimonial-slide">
+                        <img src="img-9.png" style="width: 20px;">
+                          <p class="testimonial-text">Very beautiful product and very helpful</p>
+                          <div class="testimonial-rating">★★★★★</div>
+                          <p class="testimonial-author">- by <span style="font-style: italic;">Zoetic Fashion</span></p>
+                      </div>
+                      <div class="testimonial-slide">
+                        <img src="avatar-3.jpg" style="width: 20px;">
+                          <p class="testimonial-text">Amazing Template, very easy to</p>
+                          <div class="testimonial-rating">★★★★★</div>
+                          <p class="testimonial-author">- by <span style="font-style: italic;">Henry Baird</span></p>
+                      </div>
+                    </div>
+                </div>
+                </div>
+              </div>
+              <div class="customer-reviews">
+                <div class="customer-heading">
+                  <h6 class="text-muted mb-4 text-uppercase fw-semibold">Customer Reviews</h6>
+                  <div class="overall-rating">
+                    <div class="stars">★★★★☆</div>
+                    <div class="rating-number">4.5 out of 5</div>
+                </div>
+                <div class="total-reviews">Total 5.50k reviews</div>
+            </div>
+            
+            <div class="rating-bars">
+                <div class="rating-bar">
+                    <span class="rating-label">5 star</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 80%; background: #0AB39C;"></div>
+                    </div>
+                    <span class="rating-number">2758</span>
+                </div>
+                <div class="rating-bar">
+                    <span class="rating-label">4 star</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 65%; background: #0AB39C;"></div>
+                    </div>
+                    <span class="rating-number">1063</span>
+                </div>
+                <div class="rating-bar">
+                    <span class="rating-label">3 star</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 30%; background: #F7B84B;"></div>
+                    </div>
+                    <span class="rating-number">997</span>
+                </div>
+                <div class="rating-bar">
+                    <span class="rating-label">2 star</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 10%; background: #0AB39C;"></div>
+                    </div>
+                    <span class="rating-number">227</span>
+                </div>
+                <div class="rating-bar">
+                    <span class="rating-label">1 star</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 20%; background: #F06548;"></div>
+                    </div>
+                    <span class="rating-number">408</span>
+                </div>
+            </div>
+            
+            <div class="referral-card">
+                <img src="giftbox.png">
+                <h3>Invite New Seller</h3>
+                <p>Refer a new seller to us and earn $100 per referral.</p>
+                <button class="invite-button">Invite Now</button>
+            </div>
+                </div>
+              </div>
+          </div>
+          </div>
+        </div>
+      </div>
+  </section>
+  
+<section class="footer">
+  <footer class="site-footer">
+    <div class="footer-content">
+        <div class="copyright">2025 © Swapnil</div>
+        <div class="credits">Design & Develop by Swapnil</div>
+    </div>
+</footer>
+</section>
+  
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
-      crossorigin="anonymous"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous">
+    </script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    flatpickr("#dateRange", {
+      mode: "range",
+      dateFormat: "d M, Y",
+      defaultDate: ["01 Jan, 2025", "31 Jan, 2025"],
+
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Chart data
+        const data = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [
+                {
+                    label: 'Orders',
+                    data: [65, 59, 80, 81, 56, 55, 40, 72, 88, 94, 105, 120],
+                    backgroundColor: '#4e73df',
+                    borderColor: '#4e73df',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Earnings ($)',
+                    data: [28, 48, 40, 19, 86, 27, 90, 62, 54, 77, 85, 100],
+                    backgroundColor: '#1cc88a',
+                    borderColor: '#1cc88a',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Refunds',
+                    data: [5, 8, 12, 6, 3, 9, 7, 4, 11, 8, 5, 7],
+                    backgroundColor: '#e74a3b',
+                    borderColor: '#e74a3b',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        // Chart configuration
+        // Font configuration
+    const fontFamily = "Poppins"; // Your preferred font
+    const baseFontSize = 14;
+    const titleFontSize = 16;
+    const legendFontSize = 13;
+
+    // Chart configuration with font customizations
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: {
+                            family: fontFamily,
+                            size: legendFontSize,
+                            weight: 'bold' // 'normal' or 'bold'
+                        },
+                        padding: 20 // Space between legend items
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.raw;
+                        }
+                    },
+                    titleFont: {
+                        family: fontFamily,
+                        size: baseFontSize,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        family: fontFamily,
+                        size: baseFontSize
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '.00';
+                        },
+                        font: {
+                            family: fontFamily,
+                            size: baseFontSize
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Amount',
+                        font: {
+                            family: fontFamily,
+                            size: titleFontSize,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Months',
+                        font: {
+                            family: fontFamily,
+                            size: titleFontSize,
+                            weight: 'bold'
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            family: fontFamily,
+                            size: baseFontSize
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+        // Create the chart
+        const salesChart = new Chart(
+            document.getElementById('salesChart'),
+            config
+        );
+    });
+</script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+  // Initialize the map
+  const map = L.map('map').setView([50, 0], 2);
+  
+  // Add base tile layer
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  
+  // Location data with coordinates and colors
+  const locations = [
+      {
+          name: "Greenland",
+          latlng: [71.7069, -42.6043],
+          color: "#4CAF50"
+      },
+      {
+          name: "Canada",
+          latlng: [56.1304, -106.3468],
+          color: "#2196F3"
+      },
+      {
+          name: "Russia",
+          latlng: [61.5240, 105.3188],
+          color: "#FF5722"
+      },
+      {
+          name: "Palestine",
+          latlng: [31.9466, 35.3027],
+          color: "#9C27B0"
+      }
+  ];
+  
+  // Create circle markers for each location
+  locations.forEach(location => {
+      // Create a custom HTML element for the marker
+      const markerHtml = `
+          <div style="
+              --marker-color: ${location.color};
+              width: 24px;
+              height: 24px;
+              border-radius: 50%;
+              border: 2px solid white;
+              box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+              cursor: pointer;
+          "></div>
+      `;
+      
+      // Create a custom icon
+      const customIcon = L.divIcon({
+          html: markerHtml,
+          className: 'custom-circle-marker',
+          iconSize: [24, 24],
+          iconAnchor: [12, 12]
+      });
+      
+      // Add marker to map with popup
+      const marker = L.marker(location.latlng, {
+          icon: customIcon,
+          title: location.name
+      }).addTo(map);
+      
+      // Bind popup with location name
+      marker.bindPopup(`<div>${location.name}</div>`, {
+          className: 'custom-popup',
+          closeButton: false,
+          offset: [0, -12]
+      });
+      
+      // Show popup on hover
+      marker.on('mouseover', function() {
+          this.openPopup();
+      });
+      
+      // Hide popup when not hovering
+      marker.on('mouseout', function() {
+          this.closePopup();
+      });
+      
+      // Optional click event
+      marker.on('click', function() {
+          console.log(`Clicked on ${location.name}`);
+          // Add your custom click behavior here
+      });
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <script>
+    // Register plugin and create chart
+    Chart.register(ChartDataLabels);
+    
+    const ctx = document.getElementById('visitsChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Direct', 'Social', 'Email', 'Other', 'Referrals'],
+        datasets: [{
+          data: [32.0, 25.6, 23.8, 9.9, 8.7],
+          backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        cutout: '70%',
+        plugins: {
+          legend: { position: 'bottom', font: 'Poppins',labels: { usePointStyle: true } },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.label}: ${ctx.raw}%`
+            }
+          },
+          datalabels: {
+            color: '#fff',
+            font: { weight: 'bold' },
+            formatter: (value) => `${value}%`,
+            anchor: 'center'
+          }
+        }
+      }
+    });
+  </script>
+</script>
+</body>
+
 </html>
